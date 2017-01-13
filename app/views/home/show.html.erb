@@ -2,23 +2,27 @@
     <p> Your followers: </p>
     <!-- <p> @followers.count </p> -->
 
-    <% @followers.each do |follower| %>
-    <%=  follower.screen_name %>
+    <% @followers.each do |user| %>
+    <%#  user.screen_name %>
+    <%=  user %>
     <% end %>
 
     <p> Users you Follow: </p>
-    <% @following.each do |following| %>
-    <%=  following.screen_name %>
+    <% @following.each do |user| %>
+    <%#  user.screen_name %>
+    <%= user %>
     <% end %>
 
     <p>Nonfollowers: </p>
     <% @nonfollowers.each do |user| %>
-    <%= user.screen_name %>
+    <%# user.screen_name %>
+    <%=  user %>
     <% end %>
 
     <p>Accounts you don't follow back: </p>
     <% @your_non_followers.each do |user| %>
-    <%= user.screen_name %>
+    <%# user.screen_name %>
+    <%= user %>
     <% end %>
 
 <% else %>

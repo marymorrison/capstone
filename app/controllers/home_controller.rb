@@ -4,7 +4,9 @@ class HomeController < ApplicationController
 
 
       # @followers = client.followers
-      @followers = client.followers.take(200)
+      # @followers = client.followers.take(200)
+      @followers = ["MorriME"]
+
       # begin
       #   @followers.to_a
       # rescue Twitter::Error::TooManyRequests => error
@@ -16,7 +18,9 @@ class HomeController < ApplicationController
 
 
       # @following = client.friends
-      @following = client.friends.take(200)
+      # @following = client.friends.take(200)
+      @following = ["seattletimes", "westseattleblog", "SeattlePD"]
+
       # begin
       #   @following.to_a
       # rescue Twitter::Error::TooManyRequests => error
