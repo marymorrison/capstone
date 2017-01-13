@@ -18,20 +18,27 @@
 
 
     <h2>Nonfollowers: </h2>
-    <ol>
+    <table>
       <% @nonfollowers.each do |user| %>
         <%# user.screen_name %>
         <li><%=  user %></li>
       <% end %>
-    </ol>
+    </table>
 
     <h2>Accounts you don't follow back: </h2>
-    <ol>
+    <table>
+      <tr>
+        <th>Handle</th>
+        <th></th>
+      </tr>
       <% @your_non_followers.each do |user| %>
         <%# user.screen_name %>
-        <li><%= user %></li>
+        <tr>
+          <td><%= user %></td>
+          <td></td>
+        </tr>
       <% end %>
-    </ol>
+    </table>
 <% else %>
     <p>You must log in.</p>
 <% end %>
