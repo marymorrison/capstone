@@ -1,0 +1,16 @@
+<% if !current_user.nil? %>
+    <p> Your followers: </p>
+    <!-- <p> @followers.count </p> -->
+
+    <% @followers.each do |follower| %>
+    <%=  follower.screen_name %>
+    <% end %>
+<!--
+    <p> Users you Follow: </p>
+    <% @following.each do |following| %>
+    <%=  following.screen_name %>
+    <% end %> -->
+
+<% else %>
+    <p>You must log in.</p>
+<% end %>
