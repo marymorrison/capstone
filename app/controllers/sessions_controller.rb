@@ -7,15 +7,15 @@ class SessionsController < ApplicationController
     # redirect_to root_path, notice: 'Signed in'
 
 
-    puts "@@@@@@@@@@@@@@@@@@@@@@@@@"
-    puts env["omniauth.auth"]["uid"]
-    puts "@@@@@@@@@@@@@@@@@@@@@@@@@"
-
+    # puts "@@@@@@@@@@@@@@@@@@@@@@@@@"
+    # puts env["omniauth.auth"]["uid"]
+    # puts "@@@@@@@@@@@@@@@@@@@@@@@@@"
+    #
     user = User.from_omniauth(env["omniauth.auth"])
 
-    puts "$$$$$$$$$$$$$$$$$$$"
-    puts user
-    puts "$$$$$$$$$$$$$$$$$$$"
+    # puts "$$$$$$$$$$$$$$$$$$$"
+    # puts user
+    # puts "$$$$$$$$$$$$$$$$$$$"
     # session[:user_id] = User.from_omniauth(env["omniauth.auth"]).id
 
     session[:user_id] = user.id
