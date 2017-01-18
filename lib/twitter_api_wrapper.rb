@@ -13,7 +13,6 @@ class TwitterApiWrapper
   def self.listfollowers()
 
     client = OAuth::Client.new(KEY, SECRET, :site => FOLLOWERS_BASE_URL)
-    # client_two = OAuth::Client.new(KEY, SECRET, :site => FOLLOWING_BASE_URL)
 
   end
 end
