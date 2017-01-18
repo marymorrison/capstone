@@ -1,6 +1,10 @@
 # class User < ApplicationRecord
 # end
 class User < ActiveRecord::Base
+  has_many :followers
+  has_many :peeps, through: :followers
+  has_many :followees
+  has_many :peeps, through: :followees
 
 
   def self.from_omniauth(auth)
