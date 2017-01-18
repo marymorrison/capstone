@@ -1,27 +1,10 @@
 <% if !current_user.nil? %>
-    <h2> Your followers: </h2>
-    <!-- <p> @followers.count </p> -->
-    <ol>
-      <% @followers.each do |user| %>
-        <%#  user.screen_name %>
-        <li><%=  user %></li>
-      <% end %>
-    </ol>
 
-    <h2> Users you Follow: </h2>
-    <ol>
-      <% @following.each do |user| %>
-        <%#  user.screen_name %>
-        <li><%= user %></li>
-      <% end %>
-    </ol>
-
-
-    <h2>Nonfollowers: </h2>
+<h2>Nonfollowers: </h2>
     <table>
       <% @nonfollowers.each do |user| %>
-        <%# user.screen_name %>
-        <li><%=  user %></li>
+        <%= user.screen_name %>
+        <!-- <li><%#  user %></li> -->
       <% end %>
     </table>
 
@@ -32,9 +15,9 @@
         <th></th>
       </tr>
       <% @your_non_followers.each do |user| %>
-        <%# user.screen_name %>
+        <td><%= user.screen_name %></td>
         <tr>
-          <td><%= user %></td>
+          <!-- <td><%# user %></td> -->
           <td></td>
         </tr>
       <% end %>
