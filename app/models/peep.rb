@@ -13,6 +13,7 @@ class Peep < ApplicationRecord
       p.name = screen_name
       p.uid = id
       p.save
+      return p
     end
   end
 end

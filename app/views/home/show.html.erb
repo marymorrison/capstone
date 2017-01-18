@@ -1,24 +1,30 @@
 <% if !current_user.nil? %>
 
-<h2>Nonfollowers: </h2>
-    <table>
-      <% @nonfollowers.each do |user| %>
-        <%= user.screen_name %>
-        <!-- <li><%#  user %></li> -->
-      <% end %>
-    </table>
-
-    <h2>Accounts you don't follow back: </h2>
+<h2>Don't Follow You Back: </h2>
     <table>
       <tr>
         <th>Handle</th>
+        <th>User ID</th>
+      </tr>
+      <% @nonfollowers.each do |user| %>
+        <tr>
+          <td><%= user.screen_name %></td>
+          <td><%= user.id %></td>
+        </tr>
+      <% end %>
+    </table>
+
+    <h2>You Don't Follow Back: </h2>
+    <table>
+      <tr>
+        <th>Handle</th>
+        <th>User ID</th>
         <th></th>
       </tr>
       <% @your_non_followers.each do |user| %>
-        <td><%= user.screen_name %></td>
         <tr>
-          <!-- <td><%# user %></td> -->
-          <td></td>
+          <td><%= user.screen_name %></td>
+          <td><%= user.id %></td>
         </tr>
       <% end %>
     </table>
