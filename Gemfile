@@ -42,6 +42,7 @@ gem 'httparty'
 gem 'omniauth'
 gem 'rails_12factor'
 gem 'twitter-text'
+gem 'time_diff'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
