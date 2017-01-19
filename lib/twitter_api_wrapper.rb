@@ -6,7 +6,7 @@ require 'oauth'
 class TwitterApiWrapper
 
   FOLLOWERS_BASE_URL = "https://api.twitter.com/1.1/followers/list.json"
-  FOLLOWING_BASE_URL = "https://api.twitter.com/1.1/friends/list.json"
+  FOLLOWEES_BASE_URL = "https://api.twitter.com/1.1/friends/list.json"
   KEY = ENV["TWITTER_KEY"]
   SECRET = ENV["TWITTER_SECRET"]
 

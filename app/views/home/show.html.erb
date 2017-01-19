@@ -1,4 +1,10 @@
 <% if !current_user.nil? %>
+
+<p>current user id and name</p>
+<p><%= current_user.id %></p>
+<p><%= current_user.name %></p>
+
+
 <p>now</p>
 <p><%= @now %></p>
 
@@ -8,16 +14,15 @@
 <p>time diff</p>
 <p><%= @time_diff %></p>
 
+
 <h2>Don't Follow You Back: </h2>
     <table>
       <tr>
         <th>Handle</th>
-        <th>User ID</th>
       </tr>
       <% @nonfollowers.each do |user| %>
         <tr>
-          <td><%= user.screen_name %></td>
-          <td><%= user.id %></td>
+          <td><%= user %></td>
         </tr>
       <% end %>
     </table>
@@ -26,13 +31,11 @@
     <table>
       <tr>
         <th>Handle</th>
-        <th>User ID</th>
         <th></th>
       </tr>
       <% @your_non_followers.each do |user| %>
         <tr>
-          <td><%= user.screen_name %></td>
-          <td><%= user.id %></td>
+          <td><%= user %></td>
         </tr>
       <% end %>
     </table>
