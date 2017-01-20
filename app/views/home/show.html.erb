@@ -1,19 +1,21 @@
 <% if !current_user.nil? %>
 
-<p>current user id and name</p>
-<p><%= current_user.id %></p>
-<p><%= current_user.name %></p>
-
-<p>now</p>
+<h3>now</h3>
 <p><%= @now %></p>
 
-<p>last_update</p>
-<p><%= @last_update %></p>
+<h3>follower last_update</h3>
+<p><%= @follower_last_update %></p>
 
-<p>time diff</p>
+<h3>followee last_update</h3>
+<p><%= @follower_last_update %></p>
+
+<h3>list</h3>
+<p><%= @list %></p>
+<h3>most recent</h3>
+<p><%= @most_recent %></p>
+
+<h3>time diff</h3>
 <p><%= @time_diff %></p>
-<p>YOLO</p>
-<p><%= @time_diff[:minute] >= 10 || @time_diff[:hour] >= 1 || @time_diff[:day] >= 1 || @time_diff[:week] >= 1 || @time_diff[:month] >= 1 || @time_diff[:year] >= 1 %></p>
 
 <h2>Don't Follow You Back: </h2>
     <table>

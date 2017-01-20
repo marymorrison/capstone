@@ -1,17 +1,45 @@
 class HomeController < ApplicationController
 
   require 'time_diff'
+  require 'date'
 
   def show
-    @now = Time.now.utc.to_s
-    @last_updated = Peep.all.order('updated_at DESC').first
-    @last_update = Peep.all.order('updated_at DESC').first.updated_at.to_s
-    @time_diff = Time.diff(Time.parse(@last_update), Time.parse(@now))
-
     # if user is signed in
     if !current_user.nil?
+# #############################################################
+      @now = Time.now.utc.to_s
+      # Get most recent Follower instance from DB and convert to string
+      @follower_last_update = Follower.all.order('updated_at DESC').first.updated_at.to_s
+      # create hash with key datetime, and value of most recent Follower, parsed by date gem
+      @follower = {}
+      @follower[:datetime_parsed] = DateTime.parse(@follower_last_update)
+      @follower[:time_diff_string] = @follower_last_update
+
+      # Get most recent Followee instance from DB and convert to string
+      @followee_last_update = Followee.all.order('updated_at DESC').first.updated_at.to_s
+      # create hash with key datetime, and value of most recent Followee, parsed by date gem
+      @followee = {}
+      @followee[:datetime_parsed] = DateTime.parse(@followee_last_update)
+      @followee[:time_diff_string] = @followee_last_update
+      # put parsed & most recent Followee and Follower into array and sort on datetime field to find most recent update
+      @list = [@followee, @follower]
+      @most_recent_update_time = @list.sort do |a, b|
+        a[:datetime_parsed] <=> b[:datetime_parsed]
+      end.last
+
+
+      if @most_recent_update_time == @followee[:datetime_parsed]
+        @most_recent = @followee[:time_diff_string]
+      else
+        @most_recent = @follower[:time_diff_string]
+      end
+
+
+      # find difference in time between last update and now
+      @time_diff = Time.diff(Time.parse(@most_recent), Time.parse(@now))
+
       # if it's been longer than 12 or more hours since last API call
-      if @time_diff[:minute] >= 10 || @time_diff[:hour] >= 1 || @time_diff[:day] >= 1 || @time_diff[:week] >= 1 || @time_diff[:month] >= 1 || @time_diff[:year] >= 1
+      if @time_diff[:minute] >= 1 || @time_diff[:hour] >= 1 || @time_diff[:day] >= 1 || @time_diff[:week] >= 1 || @time_diff[:month] >= 1 || @time_diff[:year] >= 1
 
         # API FOLLOWERS:
         @followers_objects = client.followers
@@ -50,19 +78,24 @@ class HomeController < ApplicationController
         user = User.find_by(name: current_user.name)
 
         # DATABASE FOLLOWERS
-        user_follower_objects = Follower.where(user_id: user.id)
+        # @follower_last_update = Follower.all.order('updated_at DESC').first.updated_at
+
+        user_followers = (Follower.where(user_id: user.id)) #&& (Follower.where('updated_at'.to_s == @follower_last_update.to_s)))
+
         @user_followers_array = []
-        user_follower_objects.each do |follower_obj|
-          peep_obj = Peep.find_by(id: follower_obj.peep_id)
+        user_followers.each do |follower|
+          peep_obj = Peep.find_by(id: follower.peep_id)
           @user_followers_array << peep_obj.name
         end
         @followers = @user_followers_array
 
         # DATABASE FOLLOWEES
-        user_followee_objects = Followee.where(user_id: user.id)
+        # @followee_last_update = Followee.all.order('updated_at DESC').first.updated_at
+
+        user_followees = (Followee.where(user_id: user.id)) #&& (Followee.where('updated_at'.to_s == @followee_last_update.to_s)))
         @user_followees_array = []
-        user_followee_objects.each do |followee_obj|
-          peep_obj = Peep.find_by(id: followee_obj.peep_id)
+        user_followees.each do |followee|
+          peep_obj = Peep.find_by(id: followee.peep_id)
           @user_followees_array << peep_obj.name
         end
         @followees = @user_followees_array
