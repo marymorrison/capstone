@@ -4,7 +4,6 @@
 <p><%= current_user.id %></p>
 <p><%= current_user.name %></p>
 
-
 <p>now</p>
 <p><%= @now %></p>
 
@@ -13,16 +12,21 @@
 
 <p>time diff</p>
 <p><%= @time_diff %></p>
-
+<p>YOLO</p>
+<p><%= @time_diff[:minute] >= 10 || @time_diff[:hour] >= 1 || @time_diff[:day] >= 1 || @time_diff[:week] >= 1 || @time_diff[:month] >= 1 || @time_diff[:year] >= 1 %></p>
 
 <h2>Don't Follow You Back: </h2>
     <table>
       <tr>
         <th>Handle</th>
+        <th>Unfollow</th>
       </tr>
       <% @nonfollowers.each do |user| %>
         <tr>
           <td><%= user %></td>
+          <!-- <td><%# link_to "Follow", home_follow_path(user) %></td> -->
+          <!-- <td><%# client.unfollow<%= user %> %></td> -->
+          <!-- <td><a href="https://twitter.com/<%= user %>" class="twitter-follow-button" data-show-count="false">UnFollow <%= user %></a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></td> -->
         </tr>
       <% end %>
     </table>
@@ -31,7 +35,6 @@
     <table>
       <tr>
         <th>Handle</th>
-        <th></th>
       </tr>
       <% @your_non_followers.each do |user| %>
         <tr>
