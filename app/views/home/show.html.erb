@@ -1,46 +1,33 @@
 <% if !current_user.nil? %>
 
-<h3>now</h3>
-<p><%= @now %></p>
-
-<h3>follower last_update</h3>
-<p><%= @follower_last_update %></p>
-
-<h3>followee last_update</h3>
-<p><%= @follower_last_update %></p>
-
-<h3>list</h3>
-<p><%= @list %></p>
-<h3>most recent</h3>
-<p><%= @most_recent %></p>
-
 <h3>time diff</h3>
 <p><%= @time_diff %></p>
 
-<h2>Don't Follow You Back: </h2>
+<h2>Rude People: </h2>
     <table>
       <tr>
         <th>Handle</th>
-        <th>Unfollow</th>
+        <th>UnFollowBack</th>
       </tr>
-      <% @nonfollowers.each do |user| %>
+      <% @nonfollowers.each do |peep| %>
         <tr>
-          <td><%= user %></td>
-          <!-- <td><%# link_to "Follow", home_follow_path(user) %></td> -->
-          <!-- <td><%# client.unfollow<%= user %> %></td> -->
-          <!-- <td><a href="https://twitter.com/<%= user %>" class="twitter-follow-button" data-show-count="false">UnFollow <%= user %></a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></td> -->
+          <td><%= peep %></td>
+          <td><%= button_to 'UnFollowBack', {:controller => "home", :action => "unfollow", :peep_name => peep, :user_id=> session[:user_id]} , :method=>:post  %></td>
         </tr>
       <% end %>
     </table>
 
-    <h2>You Don't Follow Back: </h2>
+    <h2>Your Groupies: </h2>
     <table>
       <tr>
         <th>Handle</th>
+        <th>FollowBack</th>
       </tr>
-      <% @your_non_followers.each do |user| %>
+      <% @your_non_followers.each do |peep| %>
         <tr>
-          <td><%= user %></td>
+          <td><%= peep %></td>
+          <td><%= button_to 'FollowBack', {:controller => "home", :action => "follow", :peep_name => peep, :user_id=> session[:user_id]} , :method=>:post  %></td>
+
         </tr>
       <% end %>
     </table>

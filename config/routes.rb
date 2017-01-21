@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get 'signout', to: 'sessions#destroy', as: 'signout'
   resources :sessions, only: [:create, :destroy]
   resource :home, only: [:show]
-
+  post 'unfollow', to: 'home#unfollow'
+  post 'follow', to: 'home#follow'
   root to: 'home#show'
 end

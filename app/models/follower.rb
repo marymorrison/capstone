@@ -18,7 +18,7 @@ class Follower < ApplicationRecord
     @follower_last_update = Follower.all.order('updated_at DESC').first.updated_at
     Follower.all.each do |follower|
       if follower.updated_at.to_s != @follower_last_update.to_s
-        Follower.find(followee.id).destroy
+        Follower.find(follower.id).destroy
       end
     end
 
