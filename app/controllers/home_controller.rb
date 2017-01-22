@@ -4,64 +4,57 @@ class HomeController < ApplicationController
   require 'date'
 
   def show
-    # USER IS SIGNED IN
+    # CONFIRM USER IS SIGNED IN
     if !current_user.nil?
+      @current_user_image ||= User.find(session[:user_id]).image_url if session[:user_id]
+      @current_time = Time.now.utc.to_s
 
-      # ESTABLISH CURRENT TIME
-      @now = Time.now.utc.to_s
+      # GET MOST RECENT FOLLOWER & FOLLOWEE UPDATED_AT TIME FROM DB
+      # PARSE MOST RECENT FOLLOWER & FOLLOWEE UPDATED_AT W/ DATE GEM & STRINGIFY
+      # BOTH KEYS NEEDED - ONE FOR SORTING, ONE FOR TIME_DIFF GEM COMPARISON
 
-      # GET MOST RECENT FOLLOWER UPDATE TIME FROM DATABASE & CONVERT TO STRING
       if Follower.all.count > 0
-        @follower_last_update = Follower.all.order('updated_at DESC').first.updated_at.to_s
-
-        # CREATE HASH W/ KEY: DATETIME & VALUE: MOST RECENT FOLLOWER UPDATE TIME, PARSED BY DATE GEM
-        @follower = {}
-        @follower[:datetime_parsed] = DateTime.parse(@follower_last_update)
-        @follower[:time_diff_string] = @follower_last_update
+        @follower = {
+          "datetime_parsed" => DateTime.parse(Follower.all.order('updated_at DESC').first.updated_at.to_s),
+          "time_diff_string" => Follower.all.order('updated_at DESC').first.updated_at.to_s
+        }
       end
 
-      # GET MOST RECENT FOLLOWEE UPDATE TIME FROM DATABASE & CONVERT TO STRING
       if Followee.all.count > 0
-        @followee_last_update = Followee.all.order('updated_at DESC').first.updated_at.to_s
-        # CREATE HASH W/ KEY: DATETIME & VALUE: MOST RECENT FOLLOWEE UPDATE TIME, PARSED BY DATE GEM
-        @followee = {}
-        @followee[:datetime_parsed] = DateTime.parse(@followee_last_update)
-        @followee[:time_diff_string] = @followee_last_update
+        @followee = {
+          "datetime_parsed" => DateTime.parse(Followee.all.order('updated_at DESC').first.updated_at.to_s),
+          "time_diff_string" => Followee.all.order('updated_at DESC').first.updated_at.to_s
+        }
       end
 
-      # PUT PARSED & MOST RECENT FOLLOWEE & FOLLOWER INTO ARRAY AND SORT ON DATETIME FIELD TO FIND MOST RECENT UPDATE
-      # HANDLES ABSENCE OF DATA USED TO DETERMINE USE OF API OR DATABASE
+      # HANDLES ABSENCE OF DATA FROM FOLLOWER, FOLLOWEE, OR BOTH ~ RESCUE OF SORTS
       if Followee.all.count > 0 && Follower.all.count > 0
-        @list = [@followee, @follower]
-        @most_recent_update_time = @list.sort do |a, b|
-          a[:datetime_parsed] <=> b[:datetime_parsed]
-        end.last
-
-        if @most_recent_update_time == @followee[:datetime_parsed]
-          @most_recent = @followee[:time_diff_string]
-          @time_diff = Time.diff(Time.parse(@most_recent), Time.parse(@now))
+        @last_update = [@followee["datetime_parsed"], @follower["datetime_parsed"]].sort.last
+        if @last_update == @followee["datetime_parsed"]
+          @most_recent = @followee["time_diff_string"]
         else
-          @most_recent = @follower[:time_diff_string]
-          @time_diff = Time.diff(Time.parse(@most_recent), Time.parse(@now))
+          @most_recent = @follower["time_diff_string"]
         end
       elsif Followee.all.count > 0 && Follower.all.count == 0
-        @most_recent = @followee[:time_diff_string]
-        @time_diff = Time.diff(Time.parse(@most_recent), Time.parse(@now))
-
+        @most_recent = @followee["time_diff_string"]
       elsif Follower.all.count > 0 && Followee.all.count == 0
-        @most_recent = @follower[:time_diff_string]
-        @time_diff = Time.diff(Time.parse(@most_recent), Time.parse(@now))
-      else
-        @time_diff = {}
-        @time_diff[:minute] = 1
-        @time_diff[:hour] = 1
-        @time_diff[:day] = 1
-        @time_diff[:week] = 1
-        @time_diff[:month] = 1
-        @time_diff[:year] = 1
+        @most_recent = @follower["time_diff_string"]
       end
 
-      # TO DETERMINE WHETHER TO CALL API OR USE DATABASE
+      if Followee.all.count != 0 || Follower.all.count != 0
+        @time_diff = Time.diff(Time.parse(@most_recent), Time.parse(@current_time))
+      else
+        @time_diff = {
+          minute: 1,
+          hour: 1,
+          day: 1,
+          week: 1,
+          month: 1,
+          year: 1
+        }
+      end
+
+      # TIME SETTING FOR API CALLS, OTHERWISE USE DB
       if (@time_diff[:minute] >= 1 || @time_diff[:hour] >= 1 || @time_diff[:day] >= 1 || @time_diff[:week] >= 1 || @time_diff[:month] >= 1 || @time_diff[:year] >= 1)
 
         # API FOLLOWERS:
@@ -74,7 +67,6 @@ class HomeController < ApplicationController
           peep = Peep.find_or_create_by(api_data.screen_name, api_data.id, api_data.profile_image_url_https)
           Follower.find_or_create_by(current_user.id, peep.id)
         end
-
         # API FOLLOWEES:
         @followees = []
         @followees_images = []
@@ -88,12 +80,14 @@ class HomeController < ApplicationController
         # WHERE DATA IS COMING FROM
         @data_origin = "API"
 
+####################
+# TODO: FIGURE OUT REFACTOR FOR RENDERING rude ppl & groupies
+# POSSIBLY HASH
+
       else
       # DATABASE
       # USER IS NOT NEW & IF API HAS BEEN CALLED RECENTLY
-
         user = User.find_by(name: current_user.name)
-
         # DATABASE FOLLOWERS
         user_followers = (Follower.where(user_id: user.id))
         @followers = []
@@ -103,7 +97,6 @@ class HomeController < ApplicationController
           @followers << peep_obj.name
           @followers_images << peep_obj.image_url
         end
-
         # DATABASE FOLLOWEES
         user_followees = (Followee.where(user_id: user.id))
         @followees = []
@@ -113,38 +106,30 @@ class HomeController < ApplicationController
           @followees << peep_obj.name
           @followees_images << peep_obj.image_url
         end
-
         # WHERE DATA IS COMING FROM
         @data_origin = "DATABASE"
       end
 
       # DETERMINE RUDE PPL & GROUPIES
-      @nonfollowers = @followees.to_a - @followers.to_a
-      @nonfollowers_images = @followees_images.to_a - @followers_images.to_a
-      @your_non_followers = @followers.to_a - @followees.to_a
-      @your_non_followers_images = @followers_images.to_a - @followees_images.to_a
+      @nonfollowers = @followees - @followers
+      @nonfollowers_images = @followees_images - @followers_images
+      @groupies = @followers - @followees
+      @groupies_images = @followers_images - @followees_images
 
-      @nonfollowers_array_of_arrays = []
-      if @nonfollowers_images.length != nil
-        @nonfollowers_images.length.times do |i|
-          array = []
-          array << @nonfollowers[i]
-          array << @nonfollowers_images[i]
-          @nonfollowers_array_of_arrays << array
+      @nonfollowers_names_and_images = []
+      @groupies_names_and_images = []
+
+      if @nonfollowers.length != nil
+        @nonfollowers.length.times do |i|
+          @nonfollowers_names_and_images << [@nonfollowers[i], @nonfollowers_images[i]]
         end
       end
 
-      @your_non_followers_array_of_arrays = []
-      if @your_non_followers_images.length != nil
-        @your_non_followers_images.length.times do |i|
-          array = []
-          array << @your_non_followers[i]
-          array << @your_non_followers_images[i]
-          @your_non_followers_array_of_arrays << array
+      if @groupies.length != nil
+        @groupies.length.times do |i|
+          @groupies_names_and_images << [@groupies[i], @groupies_images[i]]
         end
       end
-      @current_user_image ||= User.find(session[:user_id]).image_url if session[:user_id]
-
     end
   end
 
@@ -167,5 +152,4 @@ class HomeController < ApplicationController
     end
     redirect_to root_path
   end
-
 end
