@@ -14,3 +14,58 @@
  *= require_self
  */
 @import url('foundation.css');
+
+
+img {
+  border-radius: 25%;
+}
+
+div .follow-button {
+  border-radius: 8px;
+  border-color: white;
+  border-width: thin;
+  font-weight: bold;
+  background-color: #00aced;
+  color: white;
+  padding: 10px;
+}
+
+div .unfollow-button {
+  border-radius: 8px;
+  border-color: white;
+  border-width: thin;
+  font-weight: bold;
+  background-color: red;
+  color: white;
+  padding: 10px;
+}
+
+#ratio-block {
+  border: 5px solid gold;
+  background-color: gold;
+  border-radius: 8px;
+  text-align: center;
+}
+
+#f-data {
+  margin: 5%;
+
+}
+
+.list {
+  border: 5px solid #00aced;
+  border-radius: 8px;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+td {
+  text-align: center;
+  border-radius: 8px;
+}
+
+.header {
+  text-align: center;
+  background-color: #00aced;
+  padding: 0px;
+}

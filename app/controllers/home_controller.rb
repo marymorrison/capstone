@@ -79,9 +79,9 @@ class HomeController < ApplicationController
         # WHERE DATA IS COMING FROM
         @data_origin = "API"
         # API GOLDEN RATIO AND FOLLOWERS/FOLLOWING COUNT:
+        @total_followers = @followers_images.length
+        @total_following = @followees_images.length
         if @followees_images.length > 0 && @followers_images.length > 0
-          @total_followers = @followers_images.length
-          @total_following = @followees_images.length
           @golden_ratio = ((@followees_images.length * 1.0) / @followers_images.length).round
         end
 
@@ -116,9 +116,9 @@ class HomeController < ApplicationController
         @data_origin = "DATABASE"
       end
       #  DB GOLDEN RATIO AND FOLLOWERS/FOLLOWING COUNT:
+      @total_followers = @followers_images.length
+      @total_following = @followees_images.length
       if @followees_images.length > 0 && @followers_images.length > 0
-        @total_followers = @followers_images.length
-        @total_following = @followees_images.length
         @golden_ratio = ((@followees_images.length * 1.0) / @followers_images.length).round
       end
 
