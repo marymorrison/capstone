@@ -8,7 +8,6 @@ class HomeController < ApplicationController
     if !current_user.nil?
       @current_user_image ||= User.find(session[:user_id]).image_url if session[:user_id]
       @current_time = Time.now.utc.to_s
-
       # GET MOST RECENT FOLLOWER & FOLLOWEE UPDATED_AT TIME FROM DB
       # PARSE MOST RECENT FOLLOWER & FOLLOWEE UPDATED_AT W/ DATE GEM & STRINGIFY
       # BOTH KEYS NEEDED - ONE FOR SORTING, ONE FOR TIME_DIFF GEM COMPARISON
@@ -79,6 +78,12 @@ class HomeController < ApplicationController
         end
         # WHERE DATA IS COMING FROM
         @data_origin = "API"
+        # API GOLDEN RATIO AND FOLLOWERS/FOLLOWING COUNT:
+        if @followees_images.length > 0 && @followers_images.length > 0
+          @total_followers = @followers_images.length
+          @total_following = @followees_images.length
+          @golden_ratio = ((@followees_images.length * 1.0) / @followers_images.length).round
+        end
 
 ####################
 # TODO: FIGURE OUT REFACTOR FOR RENDERING rude ppl & groupies
@@ -88,26 +93,33 @@ class HomeController < ApplicationController
       # DATABASE
       # USER IS NOT NEW & IF API HAS BEEN CALLED RECENTLY
         user = User.find_by(name: current_user.name)
+
         # DATABASE FOLLOWERS
-        user_followers = (Follower.where(user_id: user.id))
+        @user_followers = (Follower.where(user_id: user.id))
         @followers = []
         @followers_images = []
-        user_followers.each do |db_data|
+        @user_followers.each do |db_data|
           peep_obj = Peep.find_by(id: db_data.peep_id)
           @followers << peep_obj.name
           @followers_images << peep_obj.image_url
         end
         # DATABASE FOLLOWEES
-        user_followees = (Followee.where(user_id: user.id))
+        @user_followees = (Followee.where(user_id: user.id))
         @followees = []
         @followees_images = []
-        user_followees.each do |db_data|
+        @user_followees.each do |db_data|
           peep_obj = Peep.find_by(id: db_data.peep_id)
           @followees << peep_obj.name
           @followees_images << peep_obj.image_url
         end
         # WHERE DATA IS COMING FROM
         @data_origin = "DATABASE"
+      end
+      #  DB GOLDEN RATIO AND FOLLOWERS/FOLLOWING COUNT:
+      if @followees_images.length > 0 && @followers_images.length > 0
+        @total_followers = @followers_images.length
+        @total_following = @followees_images.length
+        @golden_ratio = ((@followees_images.length * 1.0) / @followers_images.length).round
       end
 
       # DETERMINE RUDE PPL & GROUPIES

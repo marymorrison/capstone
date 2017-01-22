@@ -7,14 +7,14 @@
     <%= csrf_meta_tags %>
   </head>
   <body>
-    <div><h1>
-      <% if current_user %>
-        Signed in as <strong><img src="<%= @current_user_image %>" alt="current user image"><%= current_user.name %></strong>!
-        <%= link_to "Sign out", signout_path, id: "sign_out" %>
-      <% else %>
-        <%= link_to "Sign in with Twitter", "/auth/twitter", id: "sign_in" %>
-      <% end %>
-    </h1></div>
+      <h1>
+        <% if current_user %>
+            Signed in as <strong><img src="<%= @current_user_image %>" alt="current user image"> <%= current_user.name %></strong>!
+            <%= link_to "Sign out", signout_path, id: "sign_out" %>
+        <% else %>
+          <%= link_to "Sign in with Twitter", "/auth/twitter", id: "sign_in" %>
+        <% end %>
+      </h1>
     <div>
     <%= yield %>
     </div>

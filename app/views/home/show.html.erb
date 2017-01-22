@@ -5,27 +5,38 @@
 
   <h2>DATA ORIGIN</h2>
   <p><%= @data_origin %></p>
-  <h2>Rude People: </h2>
-  <table>
-    <% @nonfollowers_names_and_images.each do |peep| %>
-      <tr>
-        <td><img src="<%= peep[1] %>" alt="rude person image"></td>
-        <td><%= link_to "#{ peep[0] }", ("http://twitter.com/" + "#{peep[0]}" ), target: :_blank %></td>
-        <td><%= button_to 'UnFollowBack', {:controller => "home", :action => "unfollow", :peep_name => peep[0], :user_id=> session[:user_id]} , :method=>:post  %></td>
-      </tr>
-    <% end %>
-  </table>
+  <div class="row">
+    <h3 class="small-12 medium-4 columns">FOLLOWING: <%= @total_following %></h3>
+    <h3 class="small-12 medium-4 columns">FOLLOWERS: <%= @total_followers %></h3>
+    <h3 class="small-12 medium-4 columns">GOLDEN RATIO <%= @golden_ratio %>:1</h3>
+  </div>
+  <div class="row">
+    <div class="small-6 medium-5 columns">
+      <h2>Rude People: </h2>
+      <table>
+        <% @nonfollowers_names_and_images.each do |peep| %>
+          <tr>
+            <td><img src="<%= peep[1] %>" alt="rude person image"></td>
+            <td><%= link_to "#{ peep[0] }", ("http://twitter.com/" + "#{peep[0]}" ), target: :_blank %></td>
+            <td><%= button_to 'UnFollowBack', {:controller => "home", :action => "unfollow", :peep_name => peep[0], :user_id=> session[:user_id]} , :method=>:post  %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+    <div class="small-6 medium-5 columns">
+      <h2>Your Groupies: </h2>
+      <table>
+        <% @groupies_names_and_images.each do |peep| %>
+          <tr>
+            <td><img src="<%= peep[1] %>" alt="groupie person image"></td>
+            <td><%= link_to "#{ peep[0] }", ("http://twitter.com/" + "#{peep[0]}" ), target: :_blank %></td>
+            <td><%= button_to 'FollowBack', {:controller => "home", :action => "follow", :peep_name => peep[0], :user_id=> session[:user_id]} , :method=>:post  %></td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+  </div>
 
-  <h2>Your Groupies: </h2>
-  <table>
-    <% @groupies_names_and_images.each do |peep| %>
-      <tr>
-        <td><img src="<%= peep[1] %>" alt="groupie person image"></td>
-        <td><%= link_to "#{ peep[0] }", ("http://twitter.com/" + "#{peep[0]}" ), target: :_blank %></td>
-        <td><%= button_to 'FollowBack', {:controller => "home", :action => "follow", :peep_name => peep[0], :user_id=> session[:user_id]} , :method=>:post  %></td>
-      </tr>
-    <% end %>
-  </table>
 <% else %>
   <p>You must log in.</p>
 <% end %>
