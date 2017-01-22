@@ -1,33 +1,40 @@
 <% if !current_user.nil? %>
 
+<!-- <p><img src="<%# @current_user_image %>" alt="current user image"></p> -->
 <h3>time diff</h3>
 <p><%= @time_diff %></p>
 
+<h2>DATA ORIGIN</h2>
+<p><%= @data_origin %></p>
 <h2>Rude People: </h2>
     <table>
       <tr>
-        <th>Handle</th>
-        <th>UnFollowBack</th>
+        <th></th>
+        <th></th>
+        <th></th>
       </tr>
-      <% @nonfollowers.each do |peep| %>
+      <% @nonfollowers_array_of_arrays.each do |peep| %>
         <tr>
-          <td><%= peep %></td>
-          <td><%= button_to 'UnFollowBack', {:controller => "home", :action => "unfollow", :peep_name => peep, :user_id=> session[:user_id]} , :method=>:post  %></td>
+          <td><img src="<%= peep[1] %>" alt="rude person image"></td>
+          <td><%= link_to "#{ peep[0] }", ("http://twitter.com/" + "#{peep[0]}" ), target: :_blank %></td>
+          <td><%= button_to 'UnFollowBack', {:controller => "home", :action => "unfollow", :peep_name => peep[0], :user_id=> session[:user_id]} , :method=>:post  %></td>
         </tr>
       <% end %>
     </table>
+
 
     <h2>Your Groupies: </h2>
     <table>
       <tr>
         <th>Handle</th>
+        <th>Image</th>
         <th>FollowBack</th>
       </tr>
-      <% @your_non_followers.each do |peep| %>
+      <% @your_non_followers_array_of_arrays.each do |peep| %>
         <tr>
-          <td><%= peep %></td>
-          <td><%= button_to 'FollowBack', {:controller => "home", :action => "follow", :peep_name => peep, :user_id=> session[:user_id]} , :method=>:post  %></td>
-
+          <td><img src="<%= peep[1] %>" alt="groupie person image"></td>
+          <td><%= link_to "#{ peep[0] }", ("http://twitter.com/" + "#{peep[0]}" ), target: :_blank %></td>
+          <td><%= button_to 'FollowBack', {:controller => "home", :action => "follow", :peep_name => peep[0], :user_id=> session[:user_id]} , :method=>:post  %></td>
         </tr>
       <% end %>
     </table>

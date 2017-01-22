@@ -1,5 +1,3 @@
-# class User < ApplicationRecord
-# end
 class User < ActiveRecord::Base
   has_many :followers
   has_many :peeps, through: :followers
@@ -22,6 +20,8 @@ class User < ActiveRecord::Base
       user.name = auth["info"]["nickname"]
       user.oauth_token = auth["credentials"]["token"]
       user.oauth_secret = auth["credentials"]["secret"]
+      user.image_url = auth["info"]["image"]
+
     end
   end
 end

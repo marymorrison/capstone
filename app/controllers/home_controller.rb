@@ -6,6 +6,9 @@ class HomeController < ApplicationController
   def show
     # if user is signed in
     if !current_user.nil?
+# //////////////////////////////////////////////////////////////////////
+# //////////////////////////////////////////////////////////////////////
+
       @now = Time.now.utc.to_s
       # Get most recent Follower instance from DB and convert to string
       if Follower.all.count > 0
@@ -56,37 +59,58 @@ class HomeController < ApplicationController
       end
 
       # if it's been longer than 12 or more hours since last API call
-      if @time_diff[:minute] >= 1 || @time_diff[:hour] >= 1 || @time_diff[:day] >= 1 || @time_diff[:week] >= 1 || @time_diff[:month] >= 1 || @time_diff[:year] >= 1
+      if (@time_diff[:minute] >= 1 || @time_diff[:hour] >= 1 || @time_diff[:day] >= 1 || @time_diff[:week] >= 1 || @time_diff[:month] >= 1 || @time_diff[:year] >= 1) 
 
         # API FOLLOWERS:
-        @followers_objects = client.followers
-        @followers_objects_clone = @followers_objects.dup
         @followers = []
-        @followers_objects_clone.each do |peep|
-          @followers << peep.screen_name
-        end
-
-        @followers_objects_clone.each do |api_data|
-          peep = Peep.find_or_create_by(api_data.screen_name, api_data.id)
+        @followers_images = []
+        @api_followers = client.followers
+        @api_followers.each do |api_data|
+          @followers << api_data.screen_name
+          @followers_images << api_data.profile_image_url_https
+          peep = Peep.find_or_create_by(api_data.screen_name, api_data.id, api_data.profile_image_url_https)
           Follower.find_or_create_by(current_user.id, peep.id)
         end
 
         # API FOLLOWEES:
-        @followees_objects = client.friends
-        @followees_objects_clone = @followees_objects.dup
         @followees = []
-        @followees_objects_clone.each do |peep|
-          @followees << peep.screen_name
-        end
-
-        @followees_objects_clone.each do |api_data|
-          peep = Peep.find_or_create_by(api_data.screen_name, api_data.id)
+        @followees_images = []
+        @api_followees = client.friends
+        @api_followees.each do |api_data|
+          @followees << api_data.screen_name
+          @followees_images << api_data.profile_image_url_https
+          peep = Peep.find_or_create_by(api_data.screen_name, api_data.id, api_data.profile_image_url_https)
           Followee.find_or_create_by(current_user.id, peep.id)
         end
 
+        # DETERMINE RUDE PPL AND GROUPIES
         @nonfollowers = @followees.to_a - @followers.to_a
+        @nonfollowers_images = @followees_images.to_a - @followers_images.to_a
         @your_non_followers = @followers.to_a - @followees.to_a
-        @nonfollowers << "API"
+        @your_non_followers_images = @followers_images.to_a - @followees_images.to_a
+
+        @nonfollowers_array_of_arrays = []
+        if @nonfollowers_images.length != nil
+          @nonfollowers_images.length.times do |i|
+            array = []
+            array << @nonfollowers[i]
+            array << @nonfollowers_images[i]
+            @nonfollowers_array_of_arrays << array
+          end
+        end
+
+        @your_non_followers_array_of_arrays = []
+        if @your_non_followers_images.length != nil
+          @your_non_followers_images.length.times do |i|
+            array = []
+            array << @your_non_followers[i]
+            array << @your_non_followers_images[i]
+            @your_non_followers_array_of_arrays << array
+          end
+        end
+
+        # TO KNOW WHERE DATA IS COMING FROM
+        @data_origin = "API"
 
       # if it hasn't been longer than 12+ hrs since last API call
       else
@@ -95,27 +119,54 @@ class HomeController < ApplicationController
 
         # DATABASE FOLLOWERS
         user_followers = (Follower.where(user_id: user.id))
-        @user_followers_array = []
-        user_followers.each do |follower|
-          peep_obj = Peep.find_by(id: follower.peep_id)
-          @user_followers_array << peep_obj.name
+        @followers = []
+        @followers_images = []
+        user_followers.each do |db_data|
+          peep_obj = Peep.find_by(id: db_data.peep_id)
+          @followers << peep_obj.name
+          @followers_images << peep_obj.image_url
         end
-        @followers = @user_followers_array
 
         # DATABASE FOLLOWEES
         user_followees = (Followee.where(user_id: user.id))
-        @user_followees_array = []
-        user_followees.each do |followee|
-          peep_obj = Peep.find_by(id: followee.peep_id)
-          @user_followees_array << peep_obj.name
+        @followees = []
+        @followees_images = []
+        user_followees.each do |db_data|
+          peep_obj = Peep.find_by(id: db_data.peep_id)
+          @followees << peep_obj.name
+          @followees_images << peep_obj.image_url
         end
-        @followees = @user_followees_array
 
+        # DETERMINE RUDE PPL AND GROUPIES
         @nonfollowers = @followees.to_a - @followers.to_a
+        @nonfollowers_images = @followees_images.to_a - @followers_images.to_a
         @your_non_followers = @followers.to_a - @followees.to_a
-        @nonfollowers << "DATABASE"
-      #
+        @your_non_followers_images = @followers_images.to_a - @followees_images.to_a
+
+        @nonfollowers_array_of_arrays = []
+        if @nonfollowers_images.length != nil
+          @nonfollowers_images.length.times do |i|
+            array = []
+            array << @nonfollowers[i]
+            array << @nonfollowers_images[i]
+            @nonfollowers_array_of_arrays << array
+          end
+        end
+
+        @your_non_followers_array_of_arrays = []
+        if @your_non_followers_images.length != nil
+          @your_non_followers_images.length.times do |i|
+            array = []
+            array << @your_non_followers[i]
+            array << @your_non_followers_images[i]
+            @your_non_followers_array_of_arrays << array
+          end
+        end
+        # TO KNOW WHERE DATA IS COMING FROM
+        @data_origin = "DATABASE"
       end
+        @current_user_image ||= User.find(session[:user_id]).image_url if session[:user_id]
+
     end
   end
 
