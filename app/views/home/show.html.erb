@@ -1,6 +1,5 @@
 <% if !current_user.nil? %>
 
-<!-- <p><img src="<%# @current_user_image %>" alt="current user image"></p> -->
 <h3>time diff</h3>
 <p><%= @time_diff %></p>
 
@@ -8,11 +7,6 @@
 <p><%= @data_origin %></p>
 <h2>Rude People: </h2>
     <table>
-      <tr>
-        <th></th>
-        <th></th>
-        <th></th>
-      </tr>
       <% @nonfollowers_array_of_arrays.each do |peep| %>
         <tr>
           <td><img src="<%= peep[1] %>" alt="rude person image"></td>
@@ -22,14 +16,8 @@
       <% end %>
     </table>
 
-
     <h2>Your Groupies: </h2>
     <table>
-      <tr>
-        <th>Handle</th>
-        <th>Image</th>
-        <th>FollowBack</th>
-      </tr>
       <% @your_non_followers_array_of_arrays.each do |peep| %>
         <tr>
           <td><img src="<%= peep[1] %>" alt="groupie person image"></td>
