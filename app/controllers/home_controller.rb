@@ -82,7 +82,7 @@ class HomeController < ApplicationController
         @total_followers = @followers_images.length
         @total_following = @followees_images.length
         if @followees_images.length > 0 && @followers_images.length > 0
-          @golden_ratio = ((@followees_images.length * 1.0) / @followers_images.length).round
+          @golden_ratio = ((@followees_images.length * 1.0) / @followers_images.length).round(2)
         end
 
 ####################
@@ -119,7 +119,7 @@ class HomeController < ApplicationController
       @total_followers = @followers_images.length
       @total_following = @followees_images.length
       if @followees_images.length > 0 && @followers_images.length > 0
-        @golden_ratio = ((@followees_images.length * 1.0) / @followers_images.length).round
+        @golden_ratio = ((@followees_images.length * 1.0) / @followers_images.length).round(2)
       end
 
       # DETERMINE RUDE PPL & GROUPIES

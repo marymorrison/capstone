@@ -1,47 +1,43 @@
 <% if !current_user.nil? %>
-
   <!-- <h3>time diff</h3>
   <p><%# @time_diff %></p>
 
   <h2>DATA ORIGIN</h2>
   <p><%# @data_origin %></p> -->
   <div class="row" id="f-data">
-    <h3 class="small-12 medium-4 columns">FOLLOWING: <%= @total_following %></h3>
-    <h3 class="small-12 medium-4 columns">FOLLOWERS: <%= @total_followers %></h3>
-    <h3 class="small-12 medium-4 columns" id="ratio-block">GOLDEN RATIO 1:<%= @golden_ratio %></h3>
+      <h4 class="small-12 medium-4 columns follow-title"><img class="bird" src="http://allthingsd.com/files/2012/06/twitter-bird-1.png" alt="bird">FOLLOWING<p><%= @total_following %></p></h4>
+      <h4 class="small-12 medium-4 columns follow-title"><img class="bird" src="http://allthingsd.com/files/2012/06/twitter-bird-1.png" alt="bird">FOLLOWERS<p><%= @total_followers %></p></h4>
+      <h4 class="small-12 medium-4 columns" id="ratio-block"><img class="bird" src="http://allthingsd.com/files/2012/06/twitter-bird-1.png" alt="bird">GOLDEN RATIO<p>1:<%= @golden_ratio %></p></h4>
   </div>
   <div class="row">
-    <div class="small-6 medium-5 columns list">
-      <h2 class="header"> Rude Peeps </h2>
+    <div class="small-5 medium-5 columns list">
+      <h2 class="header"><img class="white-bird" src="http://www.charlestonacademy.co.uk/wp-content/uploads/2013/02/twitter-bird-white-on-blue-e1365769304265.png" alt="bird"> NONFOLLOWERS   </h2>
       <table>
         <% @nonfollowers_names_and_images.each do |peep| %>
           <tr>
             <td>
               <a href="http://twitter.com/<%= peep[0] %>", target='_blank' >
-                <img src="<%= peep[1] %>" alt="rude person image">
+                <img class="hover" src="<%= peep[1] %>" alt="rude person image">
               </a>
             </td>
-            <td><%= link_to "#{ peep[0] }", ("http://twitter.com/" + "#{peep[0]}" ), target: :_blank %></td>
+            <td><%= link_to "@#{ peep[0] }", ("http://twitter.com/" + "#{peep[0]}" ), target: :_blank, class: "name" %></td>
             <td><%= button_to 'Unfollow', {:controller => "home", :action => "unfollow", :peep_name => peep[0], :user_id=> session[:user_id]} , :method=>:post, :class=>'unfollow-button' %></td>
           </tr>
         <% end %>
       </table>
     </div>
-    <div class="small-6 medium-5 columns list">
-      <h2 class="header"> Groupies </h2>
+    <div class="small-5 medium-5 columns list">
+      <h2 class="header"><img class="white-bird" src="http://www.charlestonacademy.co.uk/wp-content/uploads/2013/02/twitter-bird-white-on-blue-e1365769304265.png" alt="bird"> GROUPIES   </h2>
       <table>
         <% @groupies_names_and_images.each do |peep| %>
           <tr>
             <td>
               <a href="http://twitter.com/<%= peep[0] %>", target='_blank' >
-                <img src="<%= peep[1] %>" alt="groupie person image">
+                <img class="hover" src="<%= peep[1] %>" alt="groupie person image">
               </a>
             </td>
-            <td><%= link_to "#{ peep[0] }", ("http://twitter.com/" + "#{peep[0]}" ), target: :_blank %></td>
+            <td><%= link_to "@#{ peep[0] }", ("http://twitter.com/" + "#{peep[0]}" ), target: :_blank, class: "name" %></td>
             <td><%= button_to "Follow", {:controller => "home", :action => "follow", :peep_name => peep[0], :user_id=> session[:user_id]} , :method=>:post, :class=>'follow-button'   %></td>
-
-
-
           </tr>
         <% end %>
       </table>

@@ -7,16 +7,30 @@
     <%= csrf_meta_tags %>
   </head>
   <body>
-      <h1>
+    <header>
         <% if current_user %>
-            Signed in as <strong><img src="<%= @current_user_image %>" alt="current user image"> <%= current_user.name %></strong>!
+          <div id="signed-in">
+            Signed in as <img class="hover" src="<%= @current_user_image %>" alt="current user image">
+              <%= link_to ("@" + current_user.name), ("http://twitter.com/" + "#{current_user.name}" ), target: :_blank, id: "user-name" %>!
+
+
+
+
+
+          </div>
+          <div id="sign_out">
             <%= link_to "Sign out", signout_path, id: "sign_out" %>
-        <% else %>
-          <%= link_to "Sign in with Twitter", "/auth/twitter", id: "sign_in" %>
-        <% end %>
-      </h1>
+          </div>
+          <% else %>
+            <%= link_to "Sign in with Twitter", "/auth/twitter", id: "sign_in" %>
+          <% end %>
+    </header>
     <div>
-    <%= yield %>
+      <%= yield %>
     </div>
+    <footer>
+      <div>&copy; 2017 Mary Morrison - Ada Developers Academy Cohort 6</div>
+      <div>UnFollowBack&trade; is neither endorsed nor certified by Twitter.</div>
+    </footer>
   </body>
 </html>
