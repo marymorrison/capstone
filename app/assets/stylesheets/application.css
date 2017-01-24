@@ -137,11 +137,12 @@ tr, td {
 
 footer {
   text-align: center;
-  position: absolute;
+  position: relative;
   bottom: 0;
   height: 60px;
   width: 100%;
   padding-top: 3px;
+  margin-top: 15%;
 }
 
 .hover:hover {
