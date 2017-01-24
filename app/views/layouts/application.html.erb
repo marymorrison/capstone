@@ -22,7 +22,9 @@
             <%= link_to "Sign out", signout_path, id: "sign_out" %>
           </div>
           <% else %>
+          <div id="sign_in">
             <%= link_to "Sign in with Twitter", "/auth/twitter", id: "sign_in" %>
+          </div>
           <% end %>
     </header>
     <div>
