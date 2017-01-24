@@ -40,8 +40,17 @@ img {
   display: block;
   text-align: center;
   background-color: #00aced;
-  padding-bottom: 0.5%;
+  padding: 0;
   font-size: 2em;
+  margin: 0;
+}
+
+#white-bird-title {
+  margin: 0;
+  padding: 0;
+  height: 3%;
+  width: 3%;
+  display: inline-block;
 }
 
 div .follow-button {
