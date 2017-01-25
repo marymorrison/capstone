@@ -28,11 +28,15 @@ img {
   width: 60%;
   margin: 0 auto;
   display: block;
-  border: 3px solid #00aced;
+  border: 5px solid #00aced;
   border-radius: 2%;
   margin-bottom: 0;
   padding-bottom: 0;
   margin-top: 3%;
+}
+
+#screenshot img {
+  border-radius: 0;
 }
 
 .title {
@@ -123,16 +127,19 @@ h4 p {
 .blue-bird {
   height: 15%;
   width: 15%;
+  display: inline-block;
 }
 
 .white-bird {
   height: 10%;
   width: 10%;
+  display: inline-block;
 }
 
-#white-bird-title {
+.white-bird-title {
   height: 5%;
   width: 5%;
+  display: inline-block;
 }
 
 body {
