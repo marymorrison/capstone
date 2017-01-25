@@ -5,6 +5,7 @@ class HomeController < ApplicationController
 
   def show
     # CONFIRM USER IS SIGNED IN
+    @current_uri = request.env['PATH_INFO']
     if !current_user.nil?
       @current_user_image ||= User.find(session[:user_id]).image_url if session[:user_id]
       @current_time = Time.now.utc.to_s
