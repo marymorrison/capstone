@@ -7,11 +7,11 @@
   <div class="row" id="f-data">
       <h4 class="small-12 medium-4 columns follow-title"><img class="blue-bird" src="assets/blue_bird.png" alt="bird">FOLLOWING<p><strong><%= link_to "#{ @total_following }", ("http://twitter.com/" + "#{current_user.name}" + "/following" ), target: :_blank, class: "total_following" %></strong></p></h4>
       <h4 class="small-12 medium-4 columns follow-title"><img class="blue-bird" src="assets/blue_bird.png" alt="bird">FOLLOWERS<p><strong><%= link_to "#{ @total_followers }", ("http://twitter.com/" + "#{current_user.name}" + "/followers" ), target: :_blank, class: "total_followers" %></strong></p></h4>
-      <h4 class="small-12 medium-4 columns" id="rate-block"><img class="blue-bird" src="assets/blue_bird.png" alt="bird">GOLDEN RATE
+      <h4 class="small-12 medium-4 columns" id="rate-block"><img class="blue-bird" src="assets/blue_bird.png" alt="bird">F/F RATE
         <% if @followees_images.length > @followers_images.length %>
-          <p class="red"><strong><%= @golden_rate %></strong></p>
+          <p class="red"><strong><%= @ff_rate %></strong></p>
         <% else %>
-          <p class="green"><strong><%= @golden_rate %></strong></p>
+          <p class="green"><strong><%= @ff_rate %></strong></p>
         <% end %>
       </h4>
   </div>

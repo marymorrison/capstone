@@ -106,11 +106,11 @@ class HomeController < ApplicationController
         @data_origin = "DATABASE"
       end
 
-      # GOLDEN F/F RATE AND FOLLOWERS/FOLLOWING COUNT:
+      # F/F RATE AND FOLLOWERS/FOLLOWING COUNT:
       @total_followers = @followers_images.length
       @total_following = @followees_images.length
       if @followees_images.length > 0 && @followers_images.length > 0
-        @golden_rate = ((@followers_images.length * 1.0) / @followees_images.length).round(2)
+        @ff_rate = ((@followers_images.length * 1.0) / @followees_images.length).round(2)
       end
 
       # DETERMINE RUDE PPL & GROUPIES
