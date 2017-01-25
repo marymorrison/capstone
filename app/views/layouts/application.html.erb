@@ -13,31 +13,22 @@
             Signed in as <img class="hover" src="<%= @current_user_image %>" alt="current user image">
               <%= link_to ("@" + current_user.name), ("http://twitter.com/" + "#{current_user.name}" ), target: :_blank, id: "user-name" %>!
           </div>
-          <% if @current_uri == "/faqs" %>
-            <div class="nav-session">
-              <%= link_to "Home", root_path %>
-            </div>
-          <% else %>
-            <div class="nav-session">
-              <%= link_to "FAQs & Contact Info", faqs_path %>
-            </div>
-          <% end %>
           <div id="sign_out">
             <%= link_to "Sign out", signout_path, id: "sign_out" %>
           </div>
         <% else %>
-          <div id="sign_in">
-            <%= link_to "Sign in with Twitter", "/auth/twitter", id: "sign_in" %>
+        <div id="sign_in">
+          <%= link_to "Sign in with Twitter", "/auth/twitter", id: "sign_in" %>
+        </div>
+        <% end %>
+        <% if @current_uri == "/faqs" %>
+          <div class="nav">
+            <%= link_to "Home", root_path %>
           </div>
-          <% if @current_uri == "/faqs" %>
-            <div class="nav-no-session">
-              <%= link_to "Home", root_path %>
-            </div>
-          <% else %>
-            <div class="nav-no-session">
-              <%= link_to "FAQs & Contact Info", faqs_path %>
-            </div>
-          <% end %>
+        <% else %>
+          <div class="nav">
+            <%= link_to "FAQs & Contact Info", faqs_path %>
+          </div>
         <% end %>
 
     </header>

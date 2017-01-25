@@ -79,17 +79,6 @@ class HomeController < ApplicationController
         end
         # WHERE DATA IS COMING FROM
         @data_origin = "API"
-        # API GOLDEN RATIO AND FOLLOWERS/FOLLOWING COUNT:
-        @total_followers = @followers_images.length
-        @total_following = @followees_images.length
-        if @followees_images.length > 0 && @followers_images.length > 0
-          @golden_ratio = ((@followees_images.length * 1.0) / @followers_images.length).round(2)
-        end
-
-####################
-# TODO: FIGURE OUT REFACTOR FOR RENDERING rude ppl & groupies
-# POSSIBLY HASH
-
       else
       # DATABASE
       # USER IS NOT NEW & IF API HAS BEEN CALLED RECENTLY
@@ -116,11 +105,12 @@ class HomeController < ApplicationController
         # WHERE DATA IS COMING FROM
         @data_origin = "DATABASE"
       end
-      #  DB GOLDEN RATIO AND FOLLOWERS/FOLLOWING COUNT:
+
+      # GOLDEN F/F RATE AND FOLLOWERS/FOLLOWING COUNT:
       @total_followers = @followers_images.length
       @total_following = @followees_images.length
       if @followees_images.length > 0 && @followers_images.length > 0
-        @golden_ratio = ((@followees_images.length * 1.0) / @followers_images.length).round(2)
+        @golden_rate = ((@followers_images.length * 1.0) / @followees_images.length).round(2)
       end
 
       # DETERMINE RUDE PPL & GROUPIES

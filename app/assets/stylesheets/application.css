@@ -193,18 +193,10 @@ footer {
   transform: scale(1.6);
 }
 
-.nav-session, .nav-no-session {
-  margin-left: 19%;
+.nav {
+  margin-left: 55%;
   font-size: 1.5em;
   display: inline-block;
-}
-
-.nav-no-session {
-  margin-left: 25%;
-}
-
-.nav-session {
-  margin-left: 19%;
 }
 
 .faqs, .contact {
@@ -226,4 +218,16 @@ footer {
 .left {
   margin-left: 3%;
   margin-right: 3%;
+}
+
+.red {
+  color: red;
+}
+
+.green {
+  color: green;
+}
+
+.green span {
+  display: inline;
 }
