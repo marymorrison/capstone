@@ -8,4 +8,6 @@ Rails.application.routes.draw do
   post 'unfollow', to: 'home#unfollow'
   post 'follow', to: 'home#follow'
   root to: 'home#show'
+  get 'faqs', to: 'faqs#show', as: 'faqs'
+
 end
