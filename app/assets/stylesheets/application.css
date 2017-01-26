@@ -15,7 +15,7 @@
  */
 @import url('foundation.css');
 
-*, .title, .faqs h1, .contact-info h1, .faqs, .contact-info, #user-name, header, footer, td, h4, p, .header, div .follow-button, div .unfollow-button {
+* {
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   }
 
